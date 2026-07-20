@@ -81,8 +81,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Частная клиника в Омске с 2004 года. Врач психиатр-нарколог Бабиков В.Г., стаж 30+ лет. Анонимно, амбулаторно, по записи.",
+          "Частная клиника в Омске с 2004 года. Врач психиатр-нарколог Бабиков В.Г., стаж 30+ лет. Анонимно, амбулаторно, по записи. Лечение зависимостей, неврозов, депрессий.",
       },
+      { property: "og:title", content: "Клиника Бабикова — психотерапия и наркология в Омске" },
+      { name: "twitter:title", content: "Клиника Бабикова — психотерапия и наркология в Омске" },
+      { property: "og:description", content: "Частная клиника в Омске с 2004 года. Врач психиатр-нарколог Бабиков В.Г., стаж 30+ лет. Анонимно, амбулаторно, по записи. Лечение зависимостей, неврозов, депрессий." },
+      { name: "twitter:description", content: "Частная клиника в Омске с 2004 года. Врач психиатр-нарколог Бабиков В.Г., стаж 30+ лет. Анонимно, амбулаторно, по записи. Лечение зависимостей, неврозов, депрессий." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e0ac31ca-0089-4468-a9c7-87c40da3d4f2/id-preview-5bec4502--0d096d06-598a-4888-806e-0a9f081364d0.lovable.app-1784534113167.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e0ac31ca-0089-4468-a9c7-87c40da3d4f2/id-preview-5bec4502--0d096d06-598a-4888-806e-0a9f081364d0.lovable.app-1784534113167.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
