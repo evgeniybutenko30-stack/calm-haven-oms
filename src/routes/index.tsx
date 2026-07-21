@@ -1081,21 +1081,26 @@ function Contacts() {
             </p>
 
             <div className="mt-8 space-y-4">
-              <a
-                href={`tel:${PHONE_MAIN_TEL}`}
-                className="flex items-start gap-4 rounded-2xl bg-card p-5 border border-border/60 hover:border-primary/30 transition-colors"
-              >
+              <div className="flex items-start gap-4 rounded-2xl bg-card p-5 border border-border/60">
                 <div className="grid place-items-center h-11 w-11 rounded-full bg-primary-soft text-primary shrink-0">
                   <Phone className="h-5 w-5" strokeWidth={1.5} />
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs text-muted-foreground">Телефон клиники</div>
-                  <div className="font-display text-xl">{PHONE_MAIN}</div>
-                  <a href={`tel:${PHONE_MOB_TEL}`} className="text-sm text-muted-foreground">
+                  <a
+                    href={`tel:${PHONE_MAIN_TEL}`}
+                    className="font-display text-xl hover:text-primary transition-colors block"
+                  >
+                    {PHONE_MAIN}
+                  </a>
+                  <a
+                    href={`tel:${PHONE_MOB_TEL}`}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
                     моб. {PHONE_MOB}
                   </a>
                 </div>
-              </a>
+              </div>
               <div className="flex items-start gap-4 rounded-2xl bg-card p-5 border border-border/60">
                 <div className="grid place-items-center h-11 w-11 rounded-full bg-primary-soft text-primary shrink-0">
                   <MapPin className="h-5 w-5" strokeWidth={1.5} />
