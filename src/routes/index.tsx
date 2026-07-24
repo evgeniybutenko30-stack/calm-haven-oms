@@ -864,18 +864,51 @@ function Booking() {
 
 /* ---------- License gallery with lightbox ---------- */
 
-const LICENSES = [
-  { src: license2.url, title: "Лицензия № ЛО-55-01-001182" },
-  { src: license3.url, title: "Приложение к лицензии" },
-  { src: license4.url, title: "Санитарно-эпидемиологическое заключение" },
-  { src: license5.url, title: "Диплом о переподготовке (психотерапия)" },
-  { src: license6.url, title: "Приложение к диплому (психотерапия)" },
-  { src: license7.url, title: "Сертификат — психотерапия" },
-  { src: license8.url, title: "Диплом о переподготовке (психиатрия-наркология)" },
-  { src: license9.url, title: "Приложение к диплому (психиатрия-наркология)" },
-  { src: license10.url, title: "Сертификат — наркология" },
-  { src: license11.url, title: "Свидетельство ФНС о регистрации ИП" },
+type DocGroup = {
+  key: string;
+  label: string;
+  icon: typeof ShieldCheck;
+  docs: { src: string; title: string }[];
+};
+
+const DOC_GROUPS: DocGroup[] = [
+  {
+    key: "licenses",
+    label: "Лицензии",
+    icon: ShieldCheck,
+    docs: [
+      { src: license2.url, title: "Лицензия № ЛО-55-01-001182" },
+      { src: license3.url, title: "Приложение к лицензии" },
+      { src: license4.url, title: "Санитарно-эпидемиологическое заключение" },
+    ],
+  },
+  {
+    key: "diplomas",
+    label: "Дипломы и сертификаты",
+    icon: GraduationCap,
+    docs: [
+      { src: license5.url, title: "Диплом о переподготовке (психотерапия)" },
+      { src: license6.url, title: "Приложение к диплому (психотерапия)" },
+      { src: license7.url, title: "Сертификат — психотерапия" },
+      { src: license8.url, title: "Диплом о переподготовке (психиатрия-наркология)" },
+      { src: license9.url, title: "Приложение к диплому (психиатрия-наркология)" },
+      { src: license10.url, title: "Сертификат — наркология" },
+    ],
+  },
+  {
+    key: "registration",
+    label: "Регистрационные документы",
+    icon: Stamp,
+    docs: [{ src: license11.url, title: "Свидетельство ФНС о регистрации ИП" }],
+  },
 ];
+
+const LICENSES = DOC_GROUPS.flatMap((g) => g.docs);
+// Precompute starting index of each group in the flat LICENSES array (used for lightbox).
+const GROUP_OFFSETS = DOC_GROUPS.reduce<number[]>((acc, g, i) => {
+  acc.push(i === 0 ? 0 : acc[i - 1] + DOC_GROUPS[i - 1].docs.length);
+  return acc;
+}, []);
 
 function LicenseGallery() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
