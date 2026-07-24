@@ -948,27 +948,50 @@ function LicenseGallery() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
-          {LICENSES.map((doc, i) => (
-            <Reveal key={doc.src} delay={i * 40}>
-              <button
-                type="button"
-                onClick={() => setOpenIndex(i)}
-                className="group block w-full text-left rounded-2xl bg-card border border-border/60 overflow-hidden hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all"
-              >
-                <div className="aspect-[3/4] overflow-hidden bg-surface">
-                  <img
-                    src={doc.src}
-                    alt={doc.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                    loading="lazy"
-                  />
+        <div className="mt-12 space-y-12">
+          {DOC_GROUPS.map((group, gi) => (
+            <div key={group.key}>
+              <Reveal>
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="grid place-items-center h-8 w-8 rounded-full bg-primary-soft text-primary">
+                    <group.icon className="h-4 w-4" strokeWidth={1.7} />
+                  </div>
+                  <h3 className="font-display text-xl md:text-2xl">{group.label}</h3>
+                  <div className="flex-1 h-px bg-border/70" />
+                  <span className="text-xs text-muted-foreground">
+                    {group.docs.length} {group.docs.length === 1 ? "документ" : "документа"}
+                  </span>
                 </div>
-                <div className="p-3">
-                  <div className="text-xs text-muted-foreground line-clamp-2">{doc.title}</div>
-                </div>
-              </button>
-            </Reveal>
+              </Reveal>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+                {group.docs.map((doc, di) => {
+                  const flatIndex = GROUP_OFFSETS[gi] + di;
+                  return (
+                    <Reveal key={doc.src} delay={di * 60}>
+                      <button
+                        type="button"
+                        onClick={() => setOpenIndex(flatIndex)}
+                        className="group block w-full text-left rounded-2xl bg-card border border-border/60 overflow-hidden hover:border-primary/40 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250"
+                      >
+                        <div className="aspect-[3/4] overflow-hidden bg-surface">
+                          <img
+                            src={doc.src}
+                            alt={doc.title}
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="p-3">
+                          <div className="text-xs text-muted-foreground line-clamp-2">
+                            {doc.title}
+                          </div>
+                        </div>
+                      </button>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </div>
 
