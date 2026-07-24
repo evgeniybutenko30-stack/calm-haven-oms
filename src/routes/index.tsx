@@ -1316,7 +1316,8 @@ function StickyMobileBar() {
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
+    <div className="min-h-screen bg-background text-foreground pb-20 md:pb-0 relative">
+      <div aria-hidden className="grain-overlay" />
       <Header />
       <main>
         <Hero />
