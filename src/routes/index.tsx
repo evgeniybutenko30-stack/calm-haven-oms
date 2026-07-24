@@ -35,6 +35,9 @@ import {
   Quote,
   Calendar,
   PhoneCall,
+  BadgeCheck,
+  GraduationCap,
+  Stamp,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -74,12 +77,29 @@ const PHONE_MAIN_TEL = "+73812518256";
 const PHONE_MOB = "+7 (913) 651-82-56";
 const PHONE_MOB_TEL = "+79136518256";
 
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+function prefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function Reveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (prefersReducedMotion()) {
+      setVisible(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -95,14 +115,51 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   return (
     <div
       ref={ref}
+      className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms`,
+        willChange: "opacity, transform",
       }}
     >
       {children}
     </div>
+  );
+}
+
+/** Hero-only staged entry: renders after mount with staggered fade+slide. */
+function Stage({
+  children,
+  delay = 0,
+  as: Tag = "div",
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  as?: React.ElementType;
+  className?: string;
+}) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setMounted(true);
+      return;
+    }
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  return (
+    <Tag
+      className={className}
+      style={{
+        opacity: mounted ? 1 : 0,
+        transform: mounted ? "translateY(0)" : "translateY(18px)",
+        transition: `opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms`,
+      }}
+    >
+      {children}
+    </Tag>
   );
 }
 
@@ -212,34 +269,39 @@ function Hero() {
       <div className="container-page pt-12 pb-20 md:pt-20 md:pb-32 grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
         {/* Text column */}
         <div className="lg:col-span-7 lg:pr-6 relative z-10">
-          <Reveal>
+          <Stage delay={40}>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs text-muted-foreground mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
               Частная практика в Омске — с 2004 года
             </div>
+          </Stage>
+          <Stage delay={140}>
             <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-[5.25rem] leading-[0.95] text-foreground">
               Бабиков <span className="italic text-primary">Валерий</span>
               <br />
               Геннадьевич
             </h1>
+          </Stage>
+          <Stage delay={260}>
             <p className="mt-6 text-lg md:text-xl text-foreground/75 max-w-xl leading-relaxed">
               Врач психиатр-нарколог. Стаж более 30 лет. Помогаю анонимно и без осуждения — вам и
               вашим близким.
             </p>
+          </Stage>
 
+          <Stage delay={380}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#booking" className="btn-primary">
+              <a href="#booking" className="btn-primary hover-lift">
                 <Calendar className="h-4 w-4" />
                 Записаться на консультацию
               </a>
-              <a
-                href={`tel:${PHONE_MAIN_TEL}`}
-                className="btn-ghost"
-              >
+              <a href={`tel:${PHONE_MAIN_TEL}`} className="btn-ghost hover-lift">
                 <Phone className="h-4 w-4" /> Позвонить: {PHONE_MAIN}
               </a>
             </div>
+          </Stage>
 
+          <Stage delay={500}>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
               {[
                 { icon: Clock, title: "с 2004 года", sub: "20+ лет практики" },
@@ -260,34 +322,40 @@ function Hero() {
                 </div>
               ))}
             </div>
-          </Reveal>
+          </Stage>
         </div>
 
         {/* Doctor photo — asymmetric, bleeds off-container on desktop */}
         <div className="lg:col-span-5 relative">
-          <Reveal delay={120}>
-            <div className="relative mx-auto max-w-md lg:max-w-none lg:-mr-8 xl:-mr-16">
+          <Stage delay={280}>
+            <div className="relative mx-auto max-w-md lg:max-w-none lg:-mr-8 xl:-mr-16 group">
               <div className="absolute -inset-6 rounded-[2.5rem] bg-primary-soft/70 blur-3xl -z-10" />
               <div className="relative rounded-[2rem] overflow-hidden bg-card border border-border/60 shadow-[var(--shadow-card)]">
                 <img
                   src={doctorAsset.url}
                   alt="Бабиков Валерий Геннадьевич — врач психиатр-нарколог"
-                  className="w-full h-auto object-cover aspect-[4/5]"
+                  className="w-full h-auto object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-[1.015]"
                   loading="eager"
                 />
-              </div>
-              {/* floating credential card, overlapping the photo */}
-              <div className="hidden md:flex absolute -left-8 bottom-10 lg:-left-14 items-center gap-3 rounded-2xl bg-card border border-border/70 px-5 py-4 shadow-[var(--shadow-card)] max-w-[280px]">
-                <div className="grid place-items-center h-11 w-11 shrink-0 rounded-full bg-primary text-primary-foreground">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs text-muted-foreground">Медицинская лицензия</div>
-                  <div className="font-display text-base leading-tight">№ ЛО-55-01-001182</div>
+                {/* duotone vignette overlay — integrates photo with brand */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none mix-blend-multiply opacity-70 transition-opacity duration-500 group-hover:opacity-90"
+                  style={{
+                    background:
+                      "radial-gradient(120% 90% at 50% 40%, transparent 55%, color-mix(in oklab, var(--primary) 45%, transparent) 100%)",
+                  }}
+                />
+                {/* Corner sticker — fully inside photo bounds */}
+                <div className="absolute top-4 left-4 flex items-center gap-2 rounded-full bg-background/92 backdrop-blur-sm border border-border/60 pl-2 pr-3.5 py-1.5 shadow-[var(--shadow-soft)]">
+                  <span className="grid place-items-center h-6 w-6 rounded-full bg-primary text-primary-foreground">
+                    <BadgeCheck className="h-3.5 w-3.5" strokeWidth={2.2} />
+                  </span>
+                  <span className="text-[11px] font-medium tracking-wide">30+ лет практики</span>
                 </div>
               </div>
             </div>
-          </Reveal>
+          </Stage>
         </div>
       </div>
     </section>
@@ -343,7 +411,7 @@ function Services() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Услуги</div>
+            <div className="section-eyebrow">Услуги</div>
             <h2 className="text-3xl md:text-5xl">
               Помощь при зависимостях <span className="italic">и внутренних кризисах</span>
             </h2>
@@ -357,8 +425,8 @@ function Services() {
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s, i) => (
             <Reveal key={s.title} delay={i * 60}>
-              <article className="group h-full rounded-3xl bg-card border border-border/60 p-7 hover:border-primary/30 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-300">
-                <div className="grid place-items-center h-12 w-12 rounded-2xl bg-primary-soft text-primary mb-6">
+              <article className="group h-full rounded-3xl bg-card border border-border/60 p-7 hover:border-primary/30 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250 ease-out">
+                <div className="grid place-items-center h-12 w-12 rounded-2xl bg-primary-soft text-primary mb-6 transition-transform duration-250 group-hover:scale-105">
                   <s.icon className="h-5 w-5" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-xl mb-3">{s.title}</h3>
@@ -405,7 +473,7 @@ function Doctor() {
         </div>
         <div className="lg:col-span-7">
           <Reveal delay={80}>
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">О враче</div>
+            <div className="section-eyebrow">О враче</div>
             <h2 className="text-3xl md:text-5xl">
               Бабиков Валерий <span className="italic">Геннадьевич</span>
             </h2>
@@ -479,7 +547,7 @@ function Process() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Как проходит</div>
+            <div className="section-eyebrow">Как проходит</div>
             <h2 className="text-3xl md:text-5xl">
               Спокойно, <span className="italic">по шагам</span>
             </h2>
@@ -549,7 +617,7 @@ function Booking() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Запись</div>
+            <div className="section-eyebrow">Запись</div>
             <h2 className="text-3xl md:text-5xl">
               Выберите удобное <span className="italic">время</span>
             </h2>
@@ -560,10 +628,10 @@ function Booking() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid lg:grid-cols-5 gap-6">
+        <div className="mt-12 grid lg:grid-cols-5 gap-6 items-stretch">
           {/* Variant A — pick a slot */}
-          <Reveal delay={60}>
-            <div className="lg:col-span-3 rounded-3xl bg-card border border-border/60 p-6 md:p-8">
+          <Reveal delay={60} className="lg:col-span-3 flex">
+            <div className="w-full flex flex-col rounded-3xl bg-card border border-border/60 p-6 md:p-8 shadow-[var(--shadow-soft)]">
               <div className="flex items-center gap-3">
                 <div className="grid place-items-center h-10 w-10 rounded-full bg-primary-soft text-primary">
                   <Calendar className="h-5 w-5" strokeWidth={1.5} />
@@ -601,7 +669,7 @@ function Booking() {
                   {/* Day picker */}
                   <div className="mt-6">
                     <div className="text-xs text-muted-foreground mb-3">Выберите день</div>
-                    <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+                    <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
                       {days.map(({ date, isSunday }) => {
                         const isSelected =
                           date.toDateString() === selectedDate.toDateString();
@@ -614,19 +682,19 @@ function Booking() {
                               setSelectedSlot(null);
                             }}
                             className={[
-                              "shrink-0 min-w-[64px] rounded-2xl border px-3 py-3 text-center transition-all",
+                              "rounded-2xl border px-1 py-2.5 text-center transition-all duration-200",
                               isSunday
                                 ? "border-border/40 text-muted-foreground/50 bg-surface/40 cursor-not-allowed line-through"
                                 : isSelected
-                                  ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-card)]"
-                                  : "border-border bg-surface hover:border-primary/50",
+                                  ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-card)] scale-[1.03]"
+                                  : "border-border bg-surface hover:border-primary/50 hover:-translate-y-0.5",
                             ].join(" ")}
                             title={isSunday ? "Воскресенье — выходной" : undefined}
                           >
-                            <div className="text-[11px] uppercase opacity-80">
+                            <div className="text-[10px] uppercase opacity-80">
                               {WEEKDAYS[date.getDay()]}
                             </div>
-                            <div className="font-display text-xl leading-tight">
+                            <div className="font-display text-lg leading-tight">
                               {date.getDate()}
                             </div>
                             <div className="text-[10px] opacity-70">
@@ -645,7 +713,10 @@ function Booking() {
                         ? "Воскресенье — выходной, выберите другой день"
                         : `Доступное время на ${formatDateLong(selectedDate)}`}
                     </div>
-                    <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                    <div
+                      key={selectedDate.toDateString()}
+                      className="grid grid-cols-4 sm:grid-cols-8 gap-2 slide-r"
+                    >
                       {SLOTS.map((slot) => {
                         const disabled = isSunday;
                         const active = selectedSlot === slot;
@@ -655,12 +726,12 @@ function Booking() {
                             disabled={disabled}
                             onClick={() => setSelectedSlot(slot)}
                             className={[
-                              "rounded-xl border py-2.5 text-sm transition-all",
+                              "rounded-xl border py-2.5 text-sm transition-all duration-200",
                               disabled
                                 ? "border-border/40 text-muted-foreground/40 bg-surface/40 cursor-not-allowed"
                                 : active
-                                  ? "border-primary bg-primary text-primary-foreground"
-                                  : "border-border bg-surface hover:border-primary/50",
+                                  ? "border-primary bg-primary text-primary-foreground slot-pulse"
+                                  : "border-border bg-surface hover:border-primary/50 hover:-translate-y-0.5",
                             ].join(" ")}
                           >
                             {slot}
@@ -733,8 +804,8 @@ function Booking() {
           </Reveal>
 
           {/* Variant B — call directly */}
-          <Reveal delay={140}>
-            <div className="lg:col-span-2 h-full rounded-3xl bg-primary text-primary-foreground p-6 md:p-8 relative overflow-hidden flex flex-col">
+          <Reveal delay={140} className="lg:col-span-2 flex">
+            <div className="w-full rounded-3xl bg-primary text-primary-foreground p-6 md:p-8 relative overflow-hidden flex flex-col shadow-[var(--shadow-card)]">
               <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary-foreground/10 blur-3xl" />
               <div className="relative flex items-center gap-3">
                 <div className="grid place-items-center h-10 w-10 rounded-full bg-primary-foreground/15">
@@ -793,18 +864,51 @@ function Booking() {
 
 /* ---------- License gallery with lightbox ---------- */
 
-const LICENSES = [
-  { src: license2.url, title: "Лицензия № ЛО-55-01-001182" },
-  { src: license3.url, title: "Приложение к лицензии" },
-  { src: license4.url, title: "Санитарно-эпидемиологическое заключение" },
-  { src: license5.url, title: "Диплом о переподготовке (психотерапия)" },
-  { src: license6.url, title: "Приложение к диплому (психотерапия)" },
-  { src: license7.url, title: "Сертификат — психотерапия" },
-  { src: license8.url, title: "Диплом о переподготовке (психиатрия-наркология)" },
-  { src: license9.url, title: "Приложение к диплому (психиатрия-наркология)" },
-  { src: license10.url, title: "Сертификат — наркология" },
-  { src: license11.url, title: "Свидетельство ФНС о регистрации ИП" },
+type DocGroup = {
+  key: string;
+  label: string;
+  icon: typeof ShieldCheck;
+  docs: { src: string; title: string }[];
+};
+
+const DOC_GROUPS: DocGroup[] = [
+  {
+    key: "licenses",
+    label: "Лицензии",
+    icon: ShieldCheck,
+    docs: [
+      { src: license2.url, title: "Лицензия № ЛО-55-01-001182" },
+      { src: license3.url, title: "Приложение к лицензии" },
+      { src: license4.url, title: "Санитарно-эпидемиологическое заключение" },
+    ],
+  },
+  {
+    key: "diplomas",
+    label: "Дипломы и сертификаты",
+    icon: GraduationCap,
+    docs: [
+      { src: license5.url, title: "Диплом о переподготовке (психотерапия)" },
+      { src: license6.url, title: "Приложение к диплому (психотерапия)" },
+      { src: license7.url, title: "Сертификат — психотерапия" },
+      { src: license8.url, title: "Диплом о переподготовке (психиатрия-наркология)" },
+      { src: license9.url, title: "Приложение к диплому (психиатрия-наркология)" },
+      { src: license10.url, title: "Сертификат — наркология" },
+    ],
+  },
+  {
+    key: "registration",
+    label: "Регистрационные документы",
+    icon: Stamp,
+    docs: [{ src: license11.url, title: "Свидетельство ФНС о регистрации ИП" }],
+  },
 ];
+
+const LICENSES = DOC_GROUPS.flatMap((g) => g.docs);
+// Precompute starting index of each group in the flat LICENSES array (used for lightbox).
+const GROUP_OFFSETS = DOC_GROUPS.reduce<number[]>((acc, g, i) => {
+  acc.push(i === 0 ? 0 : acc[i - 1] + DOC_GROUPS[i - 1].docs.length);
+  return acc;
+}, []);
 
 function LicenseGallery() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -831,7 +935,7 @@ function LicenseGallery() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">
+            <div className="section-eyebrow">
               Лицензии и документы
             </div>
             <h2 className="text-3xl md:text-5xl">
@@ -844,27 +948,50 @@ function LicenseGallery() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
-          {LICENSES.map((doc, i) => (
-            <Reveal key={doc.src} delay={i * 40}>
-              <button
-                type="button"
-                onClick={() => setOpenIndex(i)}
-                className="group block w-full text-left rounded-2xl bg-card border border-border/60 overflow-hidden hover:border-primary/40 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all"
-              >
-                <div className="aspect-[3/4] overflow-hidden bg-surface">
-                  <img
-                    src={doc.src}
-                    alt={doc.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                    loading="lazy"
-                  />
+        <div className="mt-12 space-y-12">
+          {DOC_GROUPS.map((group, gi) => (
+            <div key={group.key}>
+              <Reveal>
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="grid place-items-center h-8 w-8 rounded-full bg-primary-soft text-primary">
+                    <group.icon className="h-4 w-4" strokeWidth={1.7} />
+                  </div>
+                  <h3 className="font-display text-xl md:text-2xl">{group.label}</h3>
+                  <div className="flex-1 h-px bg-border/70" />
+                  <span className="text-xs text-muted-foreground">
+                    {group.docs.length} {group.docs.length === 1 ? "документ" : "документа"}
+                  </span>
                 </div>
-                <div className="p-3">
-                  <div className="text-xs text-muted-foreground line-clamp-2">{doc.title}</div>
-                </div>
-              </button>
-            </Reveal>
+              </Reveal>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+                {group.docs.map((doc, di) => {
+                  const flatIndex = GROUP_OFFSETS[gi] + di;
+                  return (
+                    <Reveal key={doc.src} delay={di * 60}>
+                      <button
+                        type="button"
+                        onClick={() => setOpenIndex(flatIndex)}
+                        className="group block w-full text-left rounded-2xl bg-card border border-border/60 overflow-hidden hover:border-primary/40 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250"
+                      >
+                        <div className="aspect-[3/4] overflow-hidden bg-surface">
+                          <img
+                            src={doc.src}
+                            alt={doc.title}
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="p-3">
+                          <div className="text-xs text-muted-foreground line-clamp-2">
+                            {doc.title}
+                          </div>
+                        </div>
+                      </button>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </div>
 
@@ -932,7 +1059,8 @@ function LicenseGallery() {
           </button>
 
           <div
-            className="max-w-[90vw] max-h-[88vh] flex flex-col items-center gap-3"
+            key={openIndex}
+            className="max-w-[90vw] max-h-[88vh] flex flex-col items-center gap-3 lightbox-in"
             onClick={(e) => e.stopPropagation()}
           >
             <img
@@ -988,7 +1116,7 @@ function Reviews() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Отзывы</div>
+            <div className="section-eyebrow">Отзывы</div>
             <h2 className="text-3xl md:text-5xl">
               Что говорят <span className="italic">пациенты и близкие</span>
             </h2>
@@ -998,23 +1126,37 @@ function Reviews() {
             </p>
           </div>
         </Reveal>
-        <div className="mt-14 grid md:grid-cols-2 gap-5">
-          {REVIEWS.map((r, i) => (
-            <Reveal key={r.tag} delay={i * 60}>
-              <figure className="h-full rounded-3xl bg-card border border-border/60 p-7 md:p-8 flex flex-col hover:shadow-[var(--shadow-card)] transition-shadow">
-                <div className="flex items-center justify-between">
-                  <Quote className="h-6 w-6 text-primary/60" />
-                  <span className="text-[11px] uppercase tracking-widest text-primary bg-primary-soft rounded-full px-3 py-1">
-                    {r.tag}
-                  </span>
-                </div>
-                <blockquote className="mt-5 text-foreground/85 leading-relaxed flex-1 text-[1.02rem]">
-                  {r.text}
-                </blockquote>
-                <figcaption className="mt-6 text-sm text-muted-foreground">— {r.author}</figcaption>
-              </figure>
-            </Reveal>
-          ))}
+        <div className="mt-14 relative -mx-5 md:mx-0">
+          <div
+            className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-5 md:px-0 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {REVIEWS.map((r, i) => (
+              <Reveal
+                key={r.tag}
+                delay={i * 60}
+                className="snap-start shrink-0 w-[85%] sm:w-[60%] md:w-[46%] lg:w-[38%]"
+              >
+                <figure className="h-full rounded-3xl bg-card border border-border/60 p-7 md:p-8 flex flex-col hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250">
+                  <div className="flex items-center justify-between gap-3">
+                    <Quote className="h-6 w-6 text-primary/60 shrink-0" />
+                    <span className="text-[11px] uppercase tracking-widest text-primary bg-primary-soft rounded-full px-3 py-1 truncate">
+                      {r.tag}
+                    </span>
+                  </div>
+                  <blockquote className="mt-5 text-foreground/85 leading-relaxed flex-1 text-[1.02rem]">
+                    {r.text}
+                  </blockquote>
+                  <figcaption className="mt-6 text-sm text-muted-foreground">
+                    — {r.author}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-3 flex items-center gap-2 px-5 md:px-0 text-xs text-muted-foreground">
+            <ChevronRight className="h-4 w-4" />
+            Прокрутите, чтобы посмотреть все отзывы
+          </div>
         </div>
       </div>
     </section>
@@ -1036,7 +1178,7 @@ function Prices() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Цены</div>
+            <div className="section-eyebrow">Цены</div>
             <h2 className="text-3xl md:text-5xl">
               Прозрачная <span className="italic">стоимость</span>
             </h2>
@@ -1071,7 +1213,7 @@ function Contacts() {
       <div className="container-page grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-6">
           <Reveal>
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Контакты</div>
+            <div className="section-eyebrow">Контакты</div>
             <h2 className="text-3xl md:text-5xl">
               Как нас <span className="italic">найти</span>
             </h2>
@@ -1245,7 +1387,8 @@ function StickyMobileBar() {
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
+    <div className="min-h-screen bg-background text-foreground pb-20 md:pb-0 relative">
+      <div aria-hidden className="grain-overlay" />
       <Header />
       <main>
         <Hero />
