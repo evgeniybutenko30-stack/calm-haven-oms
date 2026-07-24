@@ -260,34 +260,39 @@ function Hero() {
       <div className="container-page pt-12 pb-20 md:pt-20 md:pb-32 grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
         {/* Text column */}
         <div className="lg:col-span-7 lg:pr-6 relative z-10">
-          <Reveal>
+          <Stage delay={40}>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs text-muted-foreground mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
               Частная практика в Омске — с 2004 года
             </div>
+          </Stage>
+          <Stage delay={140}>
             <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-[5.25rem] leading-[0.95] text-foreground">
               Бабиков <span className="italic text-primary">Валерий</span>
               <br />
               Геннадьевич
             </h1>
+          </Stage>
+          <Stage delay={260}>
             <p className="mt-6 text-lg md:text-xl text-foreground/75 max-w-xl leading-relaxed">
               Врач психиатр-нарколог. Стаж более 30 лет. Помогаю анонимно и без осуждения — вам и
               вашим близким.
             </p>
+          </Stage>
 
+          <Stage delay={380}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#booking" className="btn-primary">
+              <a href="#booking" className="btn-primary hover-lift">
                 <Calendar className="h-4 w-4" />
                 Записаться на консультацию
               </a>
-              <a
-                href={`tel:${PHONE_MAIN_TEL}`}
-                className="btn-ghost"
-              >
+              <a href={`tel:${PHONE_MAIN_TEL}`} className="btn-ghost hover-lift">
                 <Phone className="h-4 w-4" /> Позвонить: {PHONE_MAIN}
               </a>
             </div>
+          </Stage>
 
+          <Stage delay={500}>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
               {[
                 { icon: Clock, title: "с 2004 года", sub: "20+ лет практики" },
@@ -308,34 +313,40 @@ function Hero() {
                 </div>
               ))}
             </div>
-          </Reveal>
+          </Stage>
         </div>
 
         {/* Doctor photo — asymmetric, bleeds off-container on desktop */}
         <div className="lg:col-span-5 relative">
-          <Reveal delay={120}>
-            <div className="relative mx-auto max-w-md lg:max-w-none lg:-mr-8 xl:-mr-16">
+          <Stage delay={280}>
+            <div className="relative mx-auto max-w-md lg:max-w-none lg:-mr-8 xl:-mr-16 group">
               <div className="absolute -inset-6 rounded-[2.5rem] bg-primary-soft/70 blur-3xl -z-10" />
               <div className="relative rounded-[2rem] overflow-hidden bg-card border border-border/60 shadow-[var(--shadow-card)]">
                 <img
                   src={doctorAsset.url}
                   alt="Бабиков Валерий Геннадьевич — врач психиатр-нарколог"
-                  className="w-full h-auto object-cover aspect-[4/5]"
+                  className="w-full h-auto object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-[1.015]"
                   loading="eager"
                 />
-              </div>
-              {/* floating credential card, overlapping the photo */}
-              <div className="hidden md:flex absolute -left-8 bottom-10 lg:-left-14 items-center gap-3 rounded-2xl bg-card border border-border/70 px-5 py-4 shadow-[var(--shadow-card)] max-w-[280px]">
-                <div className="grid place-items-center h-11 w-11 shrink-0 rounded-full bg-primary text-primary-foreground">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs text-muted-foreground">Медицинская лицензия</div>
-                  <div className="font-display text-base leading-tight">№ ЛО-55-01-001182</div>
+                {/* duotone vignette overlay — integrates photo with brand */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none mix-blend-multiply opacity-70 transition-opacity duration-500 group-hover:opacity-90"
+                  style={{
+                    background:
+                      "radial-gradient(120% 90% at 50% 40%, transparent 55%, color-mix(in oklab, var(--primary) 45%, transparent) 100%)",
+                  }}
+                />
+                {/* Corner sticker — fully inside photo bounds */}
+                <div className="absolute top-4 left-4 flex items-center gap-2 rounded-full bg-background/92 backdrop-blur-sm border border-border/60 pl-2 pr-3.5 py-1.5 shadow-[var(--shadow-soft)]">
+                  <span className="grid place-items-center h-6 w-6 rounded-full bg-primary text-primary-foreground">
+                    <BadgeCheck className="h-3.5 w-3.5" strokeWidth={2.2} />
+                  </span>
+                  <span className="text-[11px] font-medium tracking-wide">30+ лет практики</span>
                 </div>
               </div>
             </div>
-          </Reveal>
+          </Stage>
         </div>
       </div>
     </section>
