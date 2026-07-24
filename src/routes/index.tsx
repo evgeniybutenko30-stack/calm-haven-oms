@@ -628,10 +628,10 @@ function Booking() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid lg:grid-cols-5 gap-6">
+        <div className="mt-12 grid lg:grid-cols-5 gap-6 items-stretch">
           {/* Variant A — pick a slot */}
-          <Reveal delay={60}>
-            <div className="lg:col-span-3 rounded-3xl bg-card border border-border/60 p-6 md:p-8">
+          <Reveal delay={60} className="lg:col-span-3 flex">
+            <div className="w-full flex flex-col rounded-3xl bg-card border border-border/60 p-6 md:p-8 shadow-[var(--shadow-soft)]">
               <div className="flex items-center gap-3">
                 <div className="grid place-items-center h-10 w-10 rounded-full bg-primary-soft text-primary">
                   <Calendar className="h-5 w-5" strokeWidth={1.5} />
