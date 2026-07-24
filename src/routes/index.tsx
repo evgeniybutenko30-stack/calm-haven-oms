@@ -77,12 +77,21 @@ const PHONE_MAIN_TEL = "+73812518256";
 const PHONE_MOB = "+7 (913) 651-82-56";
 const PHONE_MOB_TEL = "+79136518256";
 
+function prefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (prefersReducedMotion()) {
+      setVisible(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -100,12 +109,48 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
       ref={ref}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms`,
+        willChange: "opacity, transform",
       }}
     >
       {children}
     </div>
+  );
+}
+
+/** Hero-only staged entry: renders after mount with staggered fade+slide. */
+function Stage({
+  children,
+  delay = 0,
+  as: Tag = "div",
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  as?: React.ElementType;
+  className?: string;
+}) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setMounted(true);
+      return;
+    }
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  return (
+    <Tag
+      className={className}
+      style={{
+        opacity: mounted ? 1 : 0,
+        transform: mounted ? "translateY(0)" : "translateY(18px)",
+        transition: `opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms`,
+      }}
+    >
+      {children}
+    </Tag>
   );
 }
 
