@@ -804,8 +804,8 @@ function Booking() {
           </Reveal>
 
           {/* Variant B — call directly */}
-          <Reveal delay={140}>
-            <div className="lg:col-span-2 h-full rounded-3xl bg-primary text-primary-foreground p-6 md:p-8 relative overflow-hidden flex flex-col">
+          <Reveal delay={140} className="lg:col-span-2 flex">
+            <div className="w-full rounded-3xl bg-primary text-primary-foreground p-6 md:p-8 relative overflow-hidden flex flex-col shadow-[var(--shadow-card)]">
               <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary-foreground/10 blur-3xl" />
               <div className="relative flex items-center gap-3">
                 <div className="grid place-items-center h-10 w-10 rounded-full bg-primary-foreground/15">
