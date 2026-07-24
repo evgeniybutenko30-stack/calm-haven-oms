@@ -669,7 +669,7 @@ function Booking() {
                   {/* Day picker */}
                   <div className="mt-6">
                     <div className="text-xs text-muted-foreground mb-3">Выберите день</div>
-                    <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+                    <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
                       {days.map(({ date, isSunday }) => {
                         const isSelected =
                           date.toDateString() === selectedDate.toDateString();
@@ -682,19 +682,19 @@ function Booking() {
                               setSelectedSlot(null);
                             }}
                             className={[
-                              "shrink-0 min-w-[64px] rounded-2xl border px-3 py-3 text-center transition-all",
+                              "rounded-2xl border px-1 py-2.5 text-center transition-all duration-200",
                               isSunday
                                 ? "border-border/40 text-muted-foreground/50 bg-surface/40 cursor-not-allowed line-through"
                                 : isSelected
-                                  ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-card)]"
-                                  : "border-border bg-surface hover:border-primary/50",
+                                  ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-card)] scale-[1.03]"
+                                  : "border-border bg-surface hover:border-primary/50 hover:-translate-y-0.5",
                             ].join(" ")}
                             title={isSunday ? "Воскресенье — выходной" : undefined}
                           >
-                            <div className="text-[11px] uppercase opacity-80">
+                            <div className="text-[10px] uppercase opacity-80">
                               {WEEKDAYS[date.getDay()]}
                             </div>
-                            <div className="font-display text-xl leading-tight">
+                            <div className="font-display text-lg leading-tight">
                               {date.getDate()}
                             </div>
                             <div className="text-[10px] opacity-70">
