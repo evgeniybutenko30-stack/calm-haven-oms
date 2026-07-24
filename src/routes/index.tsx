@@ -1059,7 +1059,8 @@ function LicenseGallery() {
           </button>
 
           <div
-            className="max-w-[90vw] max-h-[88vh] flex flex-col items-center gap-3"
+            key={openIndex}
+            className="max-w-[90vw] max-h-[88vh] flex flex-col items-center gap-3 lightbox-in"
             onClick={(e) => e.stopPropagation()}
           >
             <img
