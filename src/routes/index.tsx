@@ -411,7 +411,7 @@ function Services() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Услуги</div>
+            <div className="section-eyebrow">Услуги</div>
             <h2 className="text-3xl md:text-5xl">
               Помощь при зависимостях <span className="italic">и внутренних кризисах</span>
             </h2>
@@ -473,7 +473,7 @@ function Doctor() {
         </div>
         <div className="lg:col-span-7">
           <Reveal delay={80}>
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">О враче</div>
+            <div className="section-eyebrow">О враче</div>
             <h2 className="text-3xl md:text-5xl">
               Бабиков Валерий <span className="italic">Геннадьевич</span>
             </h2>
@@ -547,7 +547,7 @@ function Process() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Как проходит</div>
+            <div className="section-eyebrow">Как проходит</div>
             <h2 className="text-3xl md:text-5xl">
               Спокойно, <span className="italic">по шагам</span>
             </h2>
@@ -617,7 +617,7 @@ function Booking() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Запись</div>
+            <div className="section-eyebrow">Запись</div>
             <h2 className="text-3xl md:text-5xl">
               Выберите удобное <span className="italic">время</span>
             </h2>
@@ -902,7 +902,7 @@ function LicenseGallery() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">
+            <div className="section-eyebrow">
               Лицензии и документы
             </div>
             <h2 className="text-3xl md:text-5xl">
@@ -1059,7 +1059,7 @@ function Reviews() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Отзывы</div>
+            <div className="section-eyebrow">Отзывы</div>
             <h2 className="text-3xl md:text-5xl">
               Что говорят <span className="italic">пациенты и близкие</span>
             </h2>
@@ -1107,7 +1107,7 @@ function Prices() {
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Цены</div>
+            <div className="section-eyebrow">Цены</div>
             <h2 className="text-3xl md:text-5xl">
               Прозрачная <span className="italic">стоимость</span>
             </h2>
@@ -1142,7 +1142,7 @@ function Contacts() {
       <div className="container-page grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-6">
           <Reveal>
-            <div className="text-xs uppercase tracking-widest text-primary mb-3">Контакты</div>
+            <div className="section-eyebrow">Контакты</div>
             <h2 className="text-3xl md:text-5xl">
               Как нас <span className="italic">найти</span>
             </h2>
