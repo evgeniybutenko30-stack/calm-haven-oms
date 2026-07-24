@@ -35,6 +35,9 @@ import {
   Quote,
   Calendar,
   PhoneCall,
+  BadgeCheck,
+  GraduationCap,
+  Stamp,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
