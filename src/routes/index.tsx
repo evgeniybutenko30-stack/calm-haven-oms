@@ -713,7 +713,10 @@ function Booking() {
                         ? "Воскресенье — выходной, выберите другой день"
                         : `Доступное время на ${formatDateLong(selectedDate)}`}
                     </div>
-                    <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                    <div
+                      key={selectedDate.toDateString()}
+                      className="grid grid-cols-4 sm:grid-cols-8 gap-2 slide-r"
+                    >
                       {SLOTS.map((slot) => {
                         const disabled = isSunday;
                         const active = selectedSlot === slot;
@@ -723,12 +726,12 @@ function Booking() {
                             disabled={disabled}
                             onClick={() => setSelectedSlot(slot)}
                             className={[
-                              "rounded-xl border py-2.5 text-sm transition-all",
+                              "rounded-xl border py-2.5 text-sm transition-all duration-200",
                               disabled
                                 ? "border-border/40 text-muted-foreground/40 bg-surface/40 cursor-not-allowed"
                                 : active
-                                  ? "border-primary bg-primary text-primary-foreground"
-                                  : "border-border bg-surface hover:border-primary/50",
+                                  ? "border-primary bg-primary text-primary-foreground slot-pulse"
+                                  : "border-border bg-surface hover:border-primary/50 hover:-translate-y-0.5",
                             ].join(" ")}
                           >
                             {slot}
