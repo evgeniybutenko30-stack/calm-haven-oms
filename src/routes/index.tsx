@@ -1126,23 +1126,37 @@ function Reviews() {
             </p>
           </div>
         </Reveal>
-        <div className="mt-14 grid md:grid-cols-2 gap-5">
-          {REVIEWS.map((r, i) => (
-            <Reveal key={r.tag} delay={i * 60}>
-              <figure className="h-full rounded-3xl bg-card border border-border/60 p-7 md:p-8 flex flex-col hover:shadow-[var(--shadow-card)] transition-shadow">
-                <div className="flex items-center justify-between">
-                  <Quote className="h-6 w-6 text-primary/60" />
-                  <span className="text-[11px] uppercase tracking-widest text-primary bg-primary-soft rounded-full px-3 py-1">
-                    {r.tag}
-                  </span>
-                </div>
-                <blockquote className="mt-5 text-foreground/85 leading-relaxed flex-1 text-[1.02rem]">
-                  {r.text}
-                </blockquote>
-                <figcaption className="mt-6 text-sm text-muted-foreground">— {r.author}</figcaption>
-              </figure>
-            </Reveal>
-          ))}
+        <div className="mt-14 relative -mx-5 md:mx-0">
+          <div
+            className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-5 md:px-0 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {REVIEWS.map((r, i) => (
+              <Reveal
+                key={r.tag}
+                delay={i * 60}
+                className="snap-start shrink-0 w-[85%] sm:w-[60%] md:w-[46%] lg:w-[38%]"
+              >
+                <figure className="h-full rounded-3xl bg-card border border-border/60 p-7 md:p-8 flex flex-col hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250">
+                  <div className="flex items-center justify-between gap-3">
+                    <Quote className="h-6 w-6 text-primary/60 shrink-0" />
+                    <span className="text-[11px] uppercase tracking-widest text-primary bg-primary-soft rounded-full px-3 py-1 truncate">
+                      {r.tag}
+                    </span>
+                  </div>
+                  <blockquote className="mt-5 text-foreground/85 leading-relaxed flex-1 text-[1.02rem]">
+                    {r.text}
+                  </blockquote>
+                  <figcaption className="mt-6 text-sm text-muted-foreground">
+                    — {r.author}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-3 flex items-center gap-2 px-5 md:px-0 text-xs text-muted-foreground">
+            <ChevronRight className="h-4 w-4" />
+            Прокрутите, чтобы посмотреть все отзывы
+          </div>
         </div>
       </div>
     </section>
