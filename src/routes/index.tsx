@@ -425,8 +425,8 @@ function Services() {
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s, i) => (
             <Reveal key={s.title} delay={i * 60}>
-              <article className="group h-full rounded-3xl bg-card border border-border/60 p-7 hover:border-primary/30 hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all duration-300">
-                <div className="grid place-items-center h-12 w-12 rounded-2xl bg-primary-soft text-primary mb-6">
+              <article className="group h-full rounded-3xl bg-card border border-border/60 p-7 hover:border-primary/30 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250 ease-out">
+                <div className="grid place-items-center h-12 w-12 rounded-2xl bg-primary-soft text-primary mb-6 transition-transform duration-250 group-hover:scale-105">
                   <s.icon className="h-5 w-5" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-xl mb-3">{s.title}</h3>
