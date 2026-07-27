@@ -43,17 +43,17 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Клиника Бабикова — психотерапия и наркология в Омске" },
+      { title: "Клиника психотерапии доктора Бабикова — Омск" },
       {
         name: "description",
         content:
-          "Частная клиника в Омске с 2004 года. Врач психиатр-нарколог Бабиков В.Г., стаж 30+ лет. Анонимно, амбулаторно, по записи. Лечение зависимостей, неврозов, депрессий.",
+          "Психотерапевт, гипнолог, психиатр, нарколог Бабиков В.Г. Приём в Омске с 2004 года, стаж более 30 лет. Анонимно, амбулаторно, по записи.",
       },
-      { property: "og:title", content: "Клиника Бабикова — психотерапия и наркология в Омске" },
+      { property: "og:title", content: "Клиника психотерапии доктора Бабикова — Омск" },
       {
         property: "og:description",
         content:
-          "Частная клиника в Омске с 2004 года. Врач психиатр-нарколог Бабиков В.Г., стаж 30+ лет. Анонимно, амбулаторно, по записи. Лечение зависимостей, неврозов, депрессий.",
+          "Психотерапевт, гипнолог, психиатр, нарколог Бабиков В.Г. Приём в Омске с 2004 года, стаж более 30 лет. Анонимно, амбулаторно, по записи.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -173,9 +173,11 @@ function Header() {
             Б
           </div>
           <div className="min-w-0 leading-tight">
-            <div className="font-display text-base sm:text-lg truncate">Клиника Бабикова</div>
+            <div className="font-display text-base sm:text-lg truncate">
+              Клиника психотерапии
+            </div>
             <div className="text-[11px] text-muted-foreground truncate">
-              психотерапия · наркология
+              доктора Бабикова · Омск
             </div>
           </div>
         </a>
@@ -284,8 +286,8 @@ function Hero() {
           </Stage>
           <Stage delay={260}>
             <p className="mt-6 text-lg md:text-xl text-foreground/75 max-w-xl leading-relaxed">
-              Врач психиатр-нарколог. Стаж более 30 лет. Помогаю анонимно и без осуждения — вам и
-              вашим близким.
+              Врач психотерапевт, гипнолог, психиатр, нарколог. Стаж более 30 лет. Принимаю
+              анонимно — вас и ваших близких, без осуждения и учёта.
             </p>
           </Stage>
 
@@ -333,7 +335,7 @@ function Hero() {
               <div className="relative rounded-[2rem] overflow-hidden bg-card border border-border/60 shadow-[var(--shadow-card)]">
                 <img
                   src={doctorAsset.url}
-                  alt="Бабиков Валерий Геннадьевич — врач психиатр-нарколог"
+                  alt="Бабиков Валерий Геннадьевич — психотерапевт, гипнолог, психиатр, нарколог"
                   className="w-full h-auto object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-[1.015]"
                   loading="eager"
                 />
@@ -478,19 +480,19 @@ function Doctor() {
               Бабиков Валерий <span className="italic">Геннадьевич</span>
             </h2>
             <p className="mt-3 text-lg text-muted-foreground">
-              Врач психиатр-нарколог. Практика — с 2004 года, общий стаж более 30 лет.
+              Психотерапевт, гипнолог, психиатр, нарколог. Практика с 2004 года, общий стаж более
+              30 лет.
             </p>
 
             <div className="mt-8 space-y-5 text-foreground/85 leading-relaxed">
               <p>
-                Ко мне приходят люди в очень разных состояниях — и те, кто уже принял решение, и
-                те, кто ещё сомневается. Моя задача — не давить, а помочь спокойно разобраться и
-                выбрать метод, который подойдёт именно вам.
+                Ко мне приходят в самых разных состояниях — и те, кто уже всё для себя решил, и те,
+                кто ещё сомневается. Я не давлю и не читаю нотаций: спокойно разбираемся вместе и
+                подбираем метод, который подойдёт именно вам.
               </p>
               <p>
-                Приём анонимный и амбулаторный. Заключается официальный договор на оказание
-                медицинских услуг, вы получаете чек об оплате, свидетельство о лечении и, при
-                необходимости, справку для работы.
+                Приём анонимный, амбулаторный. Работаю официально — договор, чек, свидетельство о
+                лечении, при необходимости справка для работы.
               </p>
             </div>
 
@@ -1308,10 +1310,12 @@ function Footer() {
             <div className="grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground font-display">
               Б
             </div>
-            <div className="font-display text-lg">Клиника Бабикова</div>
+            <div className="font-display text-lg leading-tight">
+              Клиника психотерапии<br />доктора Бабикова
+            </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-            Психотерапия и наркология в Омске. Анонимно, амбулаторно, с 2004 года.
+            Психотерапия, гипноз, наркология в Омске. Анонимно, амбулаторно, с 2004 года.
           </p>
           <p className="mt-4 text-xs text-muted-foreground">Лицензия № ЛО-55-01-001182</p>
         </div>
@@ -1355,7 +1359,7 @@ function Footer() {
         </div>
       </div>
       <div className="container-page mt-10 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-muted-foreground">
-        <div>© {new Date().getFullYear()} Клиника Бабикова. Все права защищены.</div>
+        <div>© {new Date().getFullYear()} Клиника психотерапии доктора Бабикова. Все права защищены.</div>
         <a href="#" className="hover:text-primary">
           Политика конфиденциальности
         </a>
