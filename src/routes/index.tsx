@@ -173,9 +173,11 @@ function Header() {
             Б
           </div>
           <div className="min-w-0 leading-tight">
-            <div className="font-display text-base sm:text-lg truncate">Клиника Бабикова</div>
+            <div className="font-display text-base sm:text-lg truncate">
+              Клиника психотерапии
+            </div>
             <div className="text-[11px] text-muted-foreground truncate">
-              психотерапия · наркология
+              доктора Бабикова · Омск
             </div>
           </div>
         </a>
