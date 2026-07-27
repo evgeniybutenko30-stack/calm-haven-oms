@@ -1310,10 +1310,12 @@ function Footer() {
             <div className="grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground font-display">
               Б
             </div>
-            <div className="font-display text-lg">Клиника Бабикова</div>
+            <div className="font-display text-lg leading-tight">
+              Клиника психотерапии<br />доктора Бабикова
+            </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-            Психотерапия и наркология в Омске. Анонимно, амбулаторно, с 2004 года.
+            Психотерапия, гипноз, наркология в Омске. Анонимно, амбулаторно, с 2004 года.
           </p>
           <p className="mt-4 text-xs text-muted-foreground">Лицензия № ЛО-55-01-001182</p>
         </div>
