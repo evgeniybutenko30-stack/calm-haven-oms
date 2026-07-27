@@ -335,7 +335,7 @@ function Hero() {
               <div className="relative rounded-[2rem] overflow-hidden bg-card border border-border/60 shadow-[var(--shadow-card)]">
                 <img
                   src={doctorAsset.url}
-                  alt="Бабиков Валерий Геннадьевич — врач психиатр-нарколог"
+                  alt="Бабиков Валерий Геннадьевич — психотерапевт, гипнолог, психиатр, нарколог"
                   className="w-full h-auto object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-[1.015]"
                   loading="eager"
                 />
