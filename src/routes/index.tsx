@@ -1359,7 +1359,7 @@ function Footer() {
         </div>
       </div>
       <div className="container-page mt-10 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-muted-foreground">
-        <div>© {new Date().getFullYear()} Клиника Бабикова. Все права защищены.</div>
+        <div>© {new Date().getFullYear()} Клиника психотерапии доктора Бабикова. Все права защищены.</div>
         <a href="#" className="hover:text-primary">
           Политика конфиденциальности
         </a>
