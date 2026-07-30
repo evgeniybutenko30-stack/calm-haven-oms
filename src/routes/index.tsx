@@ -845,7 +845,7 @@ function Booking() {
                   <Phone className="h-5 w-5 shrink-0" />
                   <div className="min-w-0">
                     <div className="text-[11px] uppercase tracking-widest text-primary-foreground/70">
-                      Клиника
+                      Основной — звоните сюда
                     </div>
                     <div className="font-display text-xl md:text-2xl">{PHONE_MAIN}</div>
                   </div>
@@ -857,7 +857,7 @@ function Booking() {
                   <Phone className="h-5 w-5 shrink-0" />
                   <div className="min-w-0">
                     <div className="text-[11px] uppercase tracking-widest text-primary-foreground/70">
-                      Мобильный
+                      Городской
                     </div>
                     <div className="font-display text-xl md:text-2xl">{PHONE_MOB}</div>
                   </div>
