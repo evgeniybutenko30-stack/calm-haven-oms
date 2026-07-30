@@ -1116,7 +1116,91 @@ const REVIEWS = [
   },
 ];
 
+function ReviewsCarousel() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const update = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft <= 4);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4);
+  };
+
+  useEffect(() => {
+    update();
+    const el = trackRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-review-card]");
+    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  return (
+    <div className="mt-10 relative">
+      <div
+        ref={trackRef}
+        className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 -mx-5 px-5 md:mx-0 md:px-0 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {REVIEWS.map((r) => (
+          <figure
+            key={r.tag}
+            data-review-card
+            className="snap-start shrink-0 w-[86%] sm:w-[58%] md:w-[46%] lg:w-[31%] rounded-3xl bg-card border border-border/60 p-7 md:p-8 flex flex-col hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <Quote className="h-6 w-6 text-primary/60 shrink-0" />
+              <span className="text-[11px] uppercase tracking-widest text-primary bg-primary-soft rounded-full px-3 py-1 truncate">
+                {r.tag}
+              </span>
+            </div>
+            <blockquote className="mt-5 text-foreground/85 leading-relaxed flex-1 text-[1.02rem]">
+              {r.text}
+            </blockquote>
+            <figcaption className="mt-6 text-sm text-muted-foreground">— {r.author}</figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div className="mt-4 flex items-center gap-3">
+        <button
+          type="button"
+          aria-label="Предыдущий отзыв"
+          onClick={() => scrollByCard(-1)}
+          disabled={atStart}
+          className="grid place-items-center h-11 w-11 rounded-full border border-border bg-surface hover:border-primary/60 hover:-translate-y-0.5 transition disabled:opacity-35 disabled:hover:transform-none"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
+          aria-label="Следующий отзыв"
+          onClick={() => scrollByCard(1)}
+          disabled={atEnd}
+          className="grid place-items-center h-11 w-11 rounded-full border border-border bg-surface hover:border-primary/60 hover:-translate-y-0.5 transition disabled:opacity-35 disabled:hover:transform-none"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+        <span className="text-xs text-muted-foreground">Листайте отзывы</span>
+      </div>
+    </div>
+  );
+}
+
 function Reviews() {
+
   return (
     <section id="reviews" className="py-14 md:py-20">
       <div className="container-page">
