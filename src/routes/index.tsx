@@ -268,7 +268,7 @@ function Hero() {
             "radial-gradient(60% 55% at 78% 30%, color-mix(in oklab, var(--primary) 12%, transparent) 0%, transparent 70%), radial-gradient(50% 45% at 8% 90%, color-mix(in oklab, var(--primary) 8%, transparent) 0%, transparent 70%)",
         }}
       />
-      <div className="container-page pt-12 pb-20 md:pt-20 md:pb-32 grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+      <div className="container-page pt-10 pb-14 md:pt-16 md:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
         {/* Text column */}
         <div className="lg:col-span-7 lg:pr-6 relative z-10">
           <Stage delay={40}>
@@ -287,7 +287,7 @@ function Hero() {
           <Stage delay={260}>
             <p className="mt-6 text-lg md:text-xl text-foreground/75 max-w-xl leading-relaxed">
               Врач психотерапевт, гипнолог, психиатр, нарколог. Стаж более 30 лет. Принимаю
-              анонимно — вас и ваших близких, без осуждения и учёта.
+              анонимно — вас и ваших близких.
             </p>
           </Stage>
 
@@ -307,7 +307,7 @@ function Hero() {
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
               {[
                 { icon: Clock, title: "с 2004 года", sub: "20+ лет практики" },
-                { icon: Lock, title: "Полная анонимность", sub: "без учёта и огласки" },
+                { icon: Lock, title: "Полная анонимность", sub: "никакой огласки" },
                 { icon: Award, title: "Лицензия", sub: "№ ЛО-55-01-001182" },
               ].map((t) => (
                 <div
@@ -368,22 +368,22 @@ const SERVICES = [
   {
     icon: Wine,
     title: "Лечение алкоголизма",
-    desc: "Комплексная амбулаторная помощь: диагностика, медикаментозная поддержка и работа с психологической зависимостью.",
+    desc: "Амбулаторная помощь: диагностика, медикаментозная поддержка и работа с психологической зависимостью.",
   },
   {
     icon: ShieldCheck,
     title: "Кодирование от алкоголизма",
-    desc: "Индивидуальный подбор метода после консультации. Безопасно, конфиденциально, с медицинским сопровождением.",
+    desc: "Метод подбираем на консультации. Безопасно, конфиденциально, под наблюдением врача.",
   },
   {
     icon: HeartPulse,
     title: "Выведение из запоя",
-    desc: "Восстановление состояния и снятие абстинентного синдрома в комфортных условиях, без госпитализации.",
+    desc: "Снимаем абстинентный синдром и восстанавливаем состояние — дома или в кабинете, без больницы.",
   },
   {
     icon: Pill,
     title: "Лечение наркомании",
-    desc: "Пошаговая программа с учётом истории и мотивации пациента. Поддержка семьи на всех этапах.",
+    desc: "Пошаговая программа под историю и настрой пациента. Поддержка семьи на всех этапах.",
   },
   {
     icon: Cigarette,
@@ -393,23 +393,23 @@ const SERVICES = [
   {
     icon: Scale,
     title: "Снижение веса",
-    desc: "Кодирование от избыточного веса и поддержка новых пищевых привычек — мягко и без давления.",
+    desc: "Кодирование от лишнего веса и помощь в закреплении новых пищевых привычек — мягко, без давления.",
   },
   {
     icon: Dice5,
     title: "Игровая зависимость",
-    desc: "Помощь при лудомании и компульсивной игре. Программа для пациента и близких.",
+    desc: "Помощь при лудомании и срывах в игру. Работаем и с пациентом, и с близкими.",
   },
   {
     icon: Brain,
     title: "Неврозы, депрессия, стресс",
-    desc: "Психотерапия и лекарственная поддержка при тревоге, бессоннице, эмоциональном выгорании.",
+    desc: "Помощь при тревоге, бессоннице и выгорании: психотерапия и, если нужно, лекарства.",
   },
 ];
 
 function Services() {
   return (
-    <section id="services" className="py-20 md:py-28 bg-surface/60">
+    <section id="services" className="py-14 md:py-20 bg-surface/60">
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
@@ -418,13 +418,12 @@ function Services() {
               Помощь при зависимостях <span className="italic">и внутренних кризисах</span>
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
-              Каждая программа подбирается индивидуально после консультации. Работаем анонимно, без
-              осуждения, в удобном темпе для пациента и семьи.
+              Программу подбираем на консультации, под вашу ситуацию. Работаем анонимно, в удобном темпе для вас и вашей семьи.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s, i) => (
             <Reveal key={s.title} delay={i * 60}>
               <article className="group h-full rounded-3xl bg-card border border-border/60 p-7 hover:border-primary/30 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 transition-all duration-250 ease-out">
@@ -450,7 +449,7 @@ function Services() {
 
 function Doctor() {
   return (
-    <section id="doctor" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="doctor" className="relative py-14 md:py-20 overflow-hidden">
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -491,8 +490,7 @@ function Doctor() {
                 подбираем метод, который подойдёт именно вам.
               </p>
               <p>
-                Приём анонимный, амбулаторный. Работаю официально — договор, чек, свидетельство о
-                лечении, при необходимости справка для работы.
+                Приём анонимный и амбулаторный. Всё официально: договор, чек, свидетельство о лечении, при необходимости — справка для работы.
               </p>
             </div>
 
@@ -526,26 +524,26 @@ function Process() {
     {
       n: "01",
       title: "Звонок или заявка",
-      text: "Свяжитесь с нами по телефону или через форму — консультация по звонку бесплатна и ни к чему не обязывает.",
+      text: "Позвоните или оставьте заявку. Разговор по телефону бесплатный и ни к чему не обязывает.",
     },
     {
       n: "02",
       title: "Очная консультация",
-      text: "Приходите один или с близкими. Врач подбирает индивидуальную программу с учётом вашей ситуации.",
+      text: "Приходите одни или с близкими. Вместе разбираем ситуацию и подбираем подходящий метод.",
     },
     {
       n: "03",
       title: "Договор и лечение",
-      text: "Заключаем официальный договор. Лечение проходит анонимно и амбулаторно, без госпитализации.",
+      text: "Подписываем договор и начинаем. Лечение анонимное, амбулаторное — без больницы.",
     },
     {
       n: "04",
       title: "Документы",
-      text: "Выдаём свидетельство о лечении и, при необходимости, справку на работу и чек об оплате.",
+      text: "Отдаём свидетельство о лечении, чек и, если нужно, справку на работу.",
     },
   ];
   return (
-    <section id="process" className="py-20 md:py-28 bg-surface/60">
+    <section id="process" className="py-14 md:py-20 bg-surface/60">
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
@@ -554,13 +552,12 @@ function Process() {
               Спокойно, <span className="italic">по шагам</span>
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
-              Никакой спешки и лишних формальностей. Вы всегда знаете, что происходит на каждом
-              этапе.
+              Без спешки и лишних формальностей — вы всегда понимаете, что происходит.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((s, i) => (
             <Reveal key={s.n} delay={i * 80}>
               <div className="relative rounded-3xl bg-card border border-border/60 p-7 h-full hover:shadow-[var(--shadow-card)] hover:-translate-y-0.5 transition-all">
@@ -607,7 +604,7 @@ function Booking() {
   const isSunday = selectedDate.getDay() === 0;
 
   return (
-    <section id="booking" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="booking" className="relative py-14 md:py-20 overflow-hidden">
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -624,13 +621,13 @@ function Booking() {
               Выберите удобное <span className="italic">время</span>
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
-              Два равнозначных способа — выберите слот на сайте или позвоните напрямую. Приём Пн–Сб
+              Выберите время на сайте или просто позвоните. Приём Пн–Сб
               10:00–18:00, воскресенье — выходной.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12 grid lg:grid-cols-5 gap-6 items-stretch">
+        <div className="mt-10 grid lg:grid-cols-5 gap-6 items-stretch">
           {/* Variant A — pick a slot */}
           <Reveal delay={60} className="lg:col-span-3 flex">
             <div className="w-full flex flex-col rounded-3xl bg-card border border-border/60 p-6 md:p-8 shadow-[var(--shadow-soft)]">
@@ -933,7 +930,7 @@ function LicenseGallery() {
   }, [openIndex]);
 
   return (
-    <section id="license" className="py-20 md:py-28 bg-surface/60">
+    <section id="license" className="py-14 md:py-20 bg-surface/60">
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
@@ -945,12 +942,12 @@ function LicenseGallery() {
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
               Медицинская лицензия № ЛО-55-01-001182, выданная Министерством здравоохранения Омской
-              области. Ниже — сканы действующих документов и дипломов врача.
+              области. Ниже — сканы документов и дипломов врача.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12 space-y-12">
+        <div className="mt-10 space-y-10">
           {DOC_GROUPS.map((group, gi) => (
             <div key={group.key}>
               <Reveal>
@@ -999,12 +996,12 @@ function LicenseGallery() {
 
         {/* Guarantees */}
         <Reveal>
-          <div className="mt-12 rounded-3xl border border-border/60 bg-card p-6 md:p-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="mt-10 rounded-3xl border border-border/60 bg-card p-6 md:p-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: FileText, t: "Официальный договор на оказание медицинских услуг" },
-              { icon: Award, t: "Свидетельство о лечении по запросу" },
-              { icon: ShieldCheck, t: "Справка на работу при необходимости" },
-              { icon: Sparkles, t: "Индивидуальный подбор метода лечения" },
+              { icon: FileText, t: "Официальный договор и чек" },
+              { icon: Award, t: "Свидетельство о лечении" },
+              { icon: ShieldCheck, t: "Справка на работу" },
+              { icon: Sparkles, t: "Метод подбираем индивидуально" },
             ].map((x) => (
               <div key={x.t} className="flex items-start gap-3">
                 <div className="grid place-items-center h-9 w-9 shrink-0 rounded-full bg-primary-soft text-primary">
@@ -1114,7 +1111,7 @@ const REVIEWS = [
 
 function Reviews() {
   return (
-    <section id="reviews" className="py-20 md:py-28">
+    <section id="reviews" className="py-14 md:py-20">
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
@@ -1123,12 +1120,11 @@ function Reviews() {
               Что говорят <span className="italic">пациенты и близкие</span>
             </h2>
             <p className="mt-5 text-muted-foreground text-sm">
-              Примеры типичных обращений — реальные отзывы будут опубликованы с письменного
-              согласия пациентов.
+              Примеры типичных обращений. Реальные отзывы публикуем только с согласия пациентов.
             </p>
           </div>
         </Reveal>
-        <div className="mt-14 relative -mx-5 md:mx-0">
+        <div className="mt-10 relative -mx-5 md:mx-0">
           <div
             className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-5 md:px-0 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
@@ -1176,7 +1172,7 @@ const PRICES = [
 
 function Prices() {
   return (
-    <section id="prices" className="py-20 md:py-28 bg-surface/60">
+    <section id="prices" className="py-14 md:py-20 bg-surface/60">
       <div className="container-page">
         <Reveal>
           <div className="max-w-2xl">
@@ -1191,7 +1187,7 @@ function Prices() {
           </div>
         </Reveal>
 
-        <div className="mt-12 rounded-3xl border border-border/60 bg-card overflow-hidden">
+        <div className="mt-10 rounded-3xl border border-border/60 bg-card overflow-hidden">
           {PRICES.map((p, i) => (
             <div
               key={p.name}
@@ -1211,7 +1207,7 @@ function Prices() {
 
 function Contacts() {
   return (
-    <section id="contacts" className="py-20 md:py-28">
+    <section id="contacts" className="py-14 md:py-20">
       <div className="container-page grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-6">
           <Reveal>
@@ -1220,8 +1216,7 @@ function Contacts() {
               Как нас <span className="italic">найти</span>
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
-              Приём — в центре Омска, по предварительной записи. Позвоните или запишитесь через
-              блок выше.
+              Приём в центре Омска по записи. Позвоните или выберите время выше.
             </p>
 
             <div className="mt-8 space-y-4">
