@@ -656,7 +656,7 @@ function Booking() {
                   <p className="mt-2 text-sm text-primary/90">
                     Заявка на{" "}
                     <b>
-                      {formatDateLong(selectedDate)}, {selectedSlot}
+                      {selectedDate ? formatDateLong(selectedDate) : ""}, {selectedSlot}
                     </b>{" "}
                     отправлена. Мы перезвоним для подтверждения записи.
                   </p>
@@ -678,7 +678,7 @@ function Booking() {
                     <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
                       {days.map(({ date, isSunday }) => {
                         const isSelected =
-                          date.toDateString() === selectedDate.toDateString();
+                          date.toDateString() === selectedDate?.toDateString();
                         return (
                           <button
                             key={date.toISOString()}
@@ -717,14 +717,14 @@ function Booking() {
                     <div className="text-xs text-muted-foreground mb-3">
                       {isSunday
                         ? "Воскресенье — выходной, выберите другой день"
-                        : `Доступное время на ${formatDateLong(selectedDate)}`}
+                        : selectedDate ? `Доступное время на ${formatDateLong(selectedDate)}` : "Загружаем расписание…"}
                     </div>
                     <div
-                      key={selectedDate.toDateString()}
+                      key={selectedDate?.toDateString() ?? "none"}
                       className="grid grid-cols-4 sm:grid-cols-8 gap-2 slide-r"
                     >
                       {SLOTS.map((slot) => {
-                        const disabled = isSunday;
+                        const disabled = isSunday || !selectedDate;
                         const active = selectedSlot === slot;
                         return (
                           <button
@@ -793,11 +793,11 @@ function Booking() {
 
                     <button
                       type="submit"
-                      disabled={!selectedSlot || isSunday}
+                      disabled={!selectedSlot || isSunday || !selectedDate}
                       className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
                     >
                       {selectedSlot
-                        ? `Записаться на ${formatDateLong(selectedDate)}, ${selectedSlot}`
+                        ? `Записаться на ${selectedDate ? formatDateLong(selectedDate) : ""}, ${selectedSlot}`
                         : "Выберите время выше"}
                     </button>
                     <p className="text-xs text-muted-foreground text-center leading-relaxed">
