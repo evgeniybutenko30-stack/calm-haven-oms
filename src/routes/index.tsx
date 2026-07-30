@@ -676,6 +676,13 @@ function Booking() {
                   <div className="mt-6">
                     <div className="text-xs text-muted-foreground mb-3">Выберите день</div>
                     <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
+                      {days.length === 0 &&
+                        Array.from({ length: 10 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className="rounded-2xl border border-border/40 bg-surface/50 h-[68px] animate-pulse"
+                          />
+                        ))}
                       {days.map(({ date, isSunday }) => {
                         const isSelected =
                           date.toDateString() === selectedDate?.toDateString();
