@@ -216,7 +216,7 @@ function Header() {
       </div>
 
       {open && (
-        <div className="fixed inset-0 z-50 bg-background lg:hidden">
+        <div className="fixed inset-0 z-50 bg-background xl:hidden overflow-y-auto">
           <div className="container-page flex items-center justify-between h-18 py-3">
             <div className="font-display text-lg">Меню</div>
             <button
