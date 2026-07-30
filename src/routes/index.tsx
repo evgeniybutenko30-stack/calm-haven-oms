@@ -306,7 +306,7 @@ function Hero() {
           <Stage delay={500}>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
               {[
-                { icon: Clock, title: "с 2004 года", sub: "20+ лет практики" },
+                { icon: Clock, title: "с 2004 года", sub: "30+ лет практики" },
                 { icon: Lock, title: "Полная анонимность", sub: "никакой огласки" },
                 { icon: Award, title: "Лицензия", sub: "№ ЛО-55-01-001182" },
               ].map((t) => (
