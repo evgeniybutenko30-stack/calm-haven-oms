@@ -595,13 +595,20 @@ function formatDateLong(d: Date) {
 }
 
 function Booking() {
-  const days = useMemo(() => buildDays(10), []);
-  const firstAvailable = days.find((x) => !x.isSunday)?.date ?? days[0].date;
-  const [selectedDate, setSelectedDate] = useState<Date>(firstAvailable);
+  // Days depend on the *client's* current date — build after mount to avoid SSR mismatch.
+  const [days, setDays] = useState<{ date: Date; isSunday: boolean }[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
 
-  const isSunday = selectedDate.getDay() === 0;
+  useEffect(() => {
+    const d = buildDays(10);
+    setDays(d);
+    setSelectedDate(d.find((x) => !x.isSunday)?.date ?? d[0].date);
+  }, []);
+
+  const isSunday = selectedDate ? selectedDate.getDay() === 0 : false;
+
 
   return (
     <section id="booking" className="relative py-14 md:py-20 overflow-hidden">
