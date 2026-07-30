@@ -72,10 +72,11 @@ const NAV = [
   { href: "#booking", label: "Записаться" },
 ];
 
-const PHONE_MAIN = "+7 (3812) 51-82-56";
-const PHONE_MAIN_TEL = "+73812518256";
-const PHONE_MOB = "+7 (913) 651-82-56";
-const PHONE_MOB_TEL = "+79136518256";
+const PHONE_MAIN = "+7 (913) 651-82-56";
+const PHONE_MAIN_TEL = "+79136518256";
+const PHONE_MOB = "+7 (3812) 51-82-56";
+const PHONE_MOB_TEL = "+73812518256";
+
 
 function prefersReducedMotion() {
   if (typeof window === "undefined") return false;
