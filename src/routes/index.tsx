@@ -168,51 +168,50 @@ function Header() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-background/85 border-b border-border/60">
-      <div className="container-page flex items-center justify-between h-18 py-3">
-        <a href="#top" className="flex items-center gap-2 min-w-0">
-          <div className="grid place-items-center h-10 w-10 shrink-0 rounded-full bg-primary text-primary-foreground font-display text-lg">
+      <div className="container-page flex items-center gap-4 xl:gap-6 h-16 md:h-18 py-2">
+        <a href="#top" className="flex items-center gap-2.5 shrink-0">
+          <div className="grid place-items-center h-9 w-9 md:h-10 md:w-10 shrink-0 rounded-full bg-primary text-primary-foreground font-display text-lg">
             Б
           </div>
-          <div className="min-w-0 leading-tight">
-            <div className="font-display text-base sm:text-lg truncate">
+          <div className="leading-tight whitespace-nowrap">
+            <div className="font-display text-[0.95rem] md:text-base">
               Клиника психотерапии
             </div>
-            <div className="text-[11px] text-muted-foreground truncate">
-              доктора Бабикова · Омск
-            </div>
+            <div className="text-[11px] text-muted-foreground">доктора Бабикова · Омск</div>
           </div>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden xl:flex items-center gap-6 mx-auto">
           {NAV.map((n) => (
             <a
               key={n.href}
               href={n.href}
-              className="text-sm text-foreground/80 hover:text-primary transition-colors"
+              className="text-sm whitespace-nowrap text-foreground/80 hover:text-primary transition-colors"
             >
               {n.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ml-auto xl:ml-0 shrink-0">
           <a
             href={`tel:${PHONE_MAIN_TEL}`}
-            className="hidden md:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium whitespace-nowrap text-foreground hover:text-primary transition-colors"
           >
             <Phone className="h-4 w-4" />
             {PHONE_MAIN}
           </a>
-          <a href="#booking" className="btn-primary hidden sm:inline-flex text-sm">
+          <a href="#booking" className="btn-primary hidden sm:inline-flex text-sm whitespace-nowrap">
             Записаться
           </a>
           <button
             aria-label="Меню"
-            className="lg:hidden grid place-items-center h-10 w-10 rounded-full border border-border"
+            className="xl:hidden grid place-items-center h-10 w-10 shrink-0 rounded-full border border-border"
             onClick={() => setOpen(true)}
           >
             <Menu className="h-5 w-5" />
           </button>
+
         </div>
       </div>
 
