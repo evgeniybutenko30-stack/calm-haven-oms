@@ -600,6 +600,12 @@ function Booking() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [comment, setComment] = useState("");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const d = buildDays(10);
@@ -756,10 +762,47 @@ function Booking() {
 
                   {/* Form */}
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
-                      if (!selectedSlot) return;
-                      setSent(true);
+                      if (sending) return;
+                      if (!selectedSlot || !selectedDate || isSunday) return;
+                      const trimmedName = name.trim();
+                      const trimmedPhone = phone.trim();
+                      if (trimmedName.length < 2 || trimmedPhone.length < 6) {
+                        setError("Укажите имя и телефон.");
+                        return;
+                      }
+                      setError(null);
+                      setSending(true);
+                      try {
+                        const res = await fetch("/api/telegram", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            name: trimmedName,
+                            phone: trimmedPhone,
+                            email: email.trim(),
+                            comment: comment.trim(),
+                            date: formatDateLong(selectedDate),
+                            slot: selectedSlot,
+                            page: typeof window !== "undefined" ? window.location.href : "",
+                          }),
+                        });
+                        if (!res.ok) throw new Error("send_failed");
+                        const data = (await res.json()) as { ok?: boolean };
+                        if (!data.ok) throw new Error("send_failed");
+                        setSent(true);
+                        setName("");
+                        setPhone("");
+                        setEmail("");
+                        setComment("");
+                      } catch {
+                        setError(
+                          "Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.",
+                        );
+                      } finally {
+                        setSending(false);
+                      }
                     }}
                     className="mt-8 space-y-4"
                   >
@@ -770,6 +813,8 @@ function Booking() {
                           required
                           type="text"
                           maxLength={80}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                           className="mt-1.5 w-full rounded-xl border border-input bg-background px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-primary transition"
                           placeholder="Имя"
                         />
@@ -780,8 +825,37 @@ function Booking() {
                           required
                           type="tel"
                           maxLength={20}
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
                           className="mt-1.5 w-full rounded-xl border border-input bg-background px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-primary transition"
                           placeholder="+7 ___ ___ __ __"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <label className="block">
+                        <span className="text-xs text-muted-foreground">Email (необязательно)</span>
+                        <input
+                          type="email"
+                          maxLength={120}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="mt-1.5 w-full rounded-xl border border-input bg-background px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-primary transition"
+                          placeholder="you@mail.ru"
+                        />
+                      </label>
+                      <label className="block">
+                        <span className="text-xs text-muted-foreground">
+                          Кратко о запросе (необязательно)
+                        </span>
+                        <input
+                          type="text"
+                          maxLength={300}
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                          className="mt-1.5 w-full rounded-xl border border-input bg-background px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-primary transition"
+                          placeholder="С чем хотите разобраться"
                         />
                       </label>
                     </div>
@@ -798,19 +872,28 @@ function Booking() {
                       </span>
                     </label>
 
+                    {error && (
+                      <p className="text-sm text-destructive text-center" role="alert">
+                        {error}
+                      </p>
+                    )}
+
                     <button
                       type="submit"
-                      disabled={!selectedSlot || isSunday || !selectedDate}
+                      disabled={!selectedSlot || isSunday || !selectedDate || sending}
                       className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
                     >
-                      {selectedSlot
-                        ? `Записаться на ${selectedDate ? formatDateLong(selectedDate) : ""}, ${selectedSlot}`
-                        : "Выберите время выше"}
+                      {sending
+                        ? "Отправляем…"
+                        : selectedSlot
+                          ? `Записаться на ${selectedDate ? formatDateLong(selectedDate) : ""}, ${selectedSlot}`
+                          : "Выберите время выше"}
                     </button>
                     <p className="text-xs text-muted-foreground text-center leading-relaxed">
                       Запись предварительная — администратор перезвонит и подтвердит слот.
                     </p>
                   </form>
+
                 </>
               )}
             </div>
