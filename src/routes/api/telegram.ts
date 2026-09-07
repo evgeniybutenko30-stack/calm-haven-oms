@@ -11,48 +11,10 @@ const BookingSchema = z.object({
   page: z.string().trim().max(200).optional().or(z.literal("")),
 });
 
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-function buildMessage(data: z.infer<typeof BookingSchema>) {
-  const extras: string[] = [];
-  if (data.date || data.slot) {
-    extras.push(`Желаемое время: ${[data.date, data.slot].filter(Boolean).join(", ")}`);
-  }
-  if (data.comment) extras.push(`Комментарий: ${data.comment}`);
-  if (data.page) extras.push(`Страница: ${data.page}`);
-
-  const now = new Date().toLocaleString("ru-RU", {
-    timeZone: "Asia/Omsk",
-    dateStyle: "short",
-    timeStyle: "short",
-  });
-
-  return [
-    "🔔 <b>НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ</b>",
-    "",
-    `👤 Имя: ${escapeHtml(data.name)}`,
-    `📱 Телефон: ${escapeHtml(data.phone)}`,
-    `📧 Email: ${data.email ? escapeHtml(data.email) : "не указан"}`,
-    "",
-    "📝 Дополнительная информация:",
-    extras.length ? extras.map((line) => escapeHtml(line)).join("\n") : "—",
-    "",
-    `🕐 Время заявки: ${now} (Омск)`,
-  ].join("\n");
-}
-
 export const Route = createFileRoute("/api/telegram")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const token = process.env["TELEGRAM_BOT_TOKEN"];
-        const chatId = process.env["TELEGRAM_CHAT_ID"];
-
         let payload: unknown;
         try {
           payload = await request.json();
@@ -65,42 +27,24 @@ export const Route = createFileRoute("/api/telegram")({
           return Response.json({ ok: false, error: "validation" }, { status: 400 });
         }
 
-        if (!token || !chatId) {
-          console.error("Telegram env vars missing: TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID");
+        if (!process.env["TELEGRAM_BOT_TOKEN"]) {
+          console.error("Telegram notification failed: TELEGRAM_BOT_TOKEN is not configured");
           return Response.json({ ok: false, error: "unavailable" }, { status: 503 });
         }
 
+        // The booking itself is accepted here. Telegram problems are logged only.
         try {
-          const tgResponse = await fetch(
-            `https://api.telegram.org/bot${token}/sendMessage`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                chat_id: chatId,
-                text: buildMessage(parsed.data),
-                parse_mode: "HTML",
-                disable_web_page_preview: true,
-              }),
-            },
-          );
-
-          const body = (await tgResponse.json().catch(() => null)) as
-            | { ok?: boolean; description?: string }
-            | null;
-
-          if (!tgResponse.ok || !body?.ok) {
-            console.error(
-              `Telegram sendMessage failed [${tgResponse.status}]: ${body?.description ?? "no body"}`,
-            );
-            return Response.json({ ok: false, error: "telegram" }, { status: 502 });
-          }
-
-          return Response.json({ ok: true });
+          const { notifyActiveUsers } = await import("@/lib/telegram-notify.server");
+          const result = await notifyActiveUsers(parsed.data);
+          console.log(`Telegram notification summary: sent=${result.sent} failed=${result.failed}`);
         } catch (error) {
-          console.error("Telegram request error", error);
-          return Response.json({ ok: false, error: "telegram" }, { status: 502 });
+          console.error(
+            "Telegram notification failed:",
+            error instanceof Error ? error.message : error,
+          );
         }
+
+        return Response.json({ ok: true });
       },
     },
   },
