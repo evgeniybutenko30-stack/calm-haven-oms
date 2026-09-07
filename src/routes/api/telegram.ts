@@ -36,9 +36,7 @@ export const Route = createFileRoute("/api/telegram")({
         try {
           const { notifyActiveUsers } = await import("@/lib/telegram-notify.server");
           const result = await notifyActiveUsers(parsed.data);
-          console.log(
-            `Telegram notification summary: sent=${result.sent} failed=${result.failed}`,
-          );
+          console.log(`Telegram notification summary: sent=${result.sent} failed=${result.failed}`);
         } catch (error) {
           console.error(
             "Telegram notification failed:",

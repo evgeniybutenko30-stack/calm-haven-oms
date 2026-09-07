@@ -9,11 +9,7 @@ import {
   isAdmin,
   sendMessage,
 } from "@/lib/telegram-api.server";
-import {
-  getTelegramStore,
-  isValidChatId,
-  type TelegramUser,
-} from "@/lib/telegram-store.server";
+import { getTelegramStore, isValidChatId, type TelegramUser } from "@/lib/telegram-store.server";
 
 const STATUS_LABEL: Record<TelegramUser["status"], string> = {
   pending: "⏳ ожидает подтверждения",
@@ -161,7 +157,10 @@ async function handleMessage(message: {
     return;
   }
 
-  await sendMessage(chat, "Доступные команды: /users, /approve &lt;chat_id&gt;, /remove &lt;chat_id&gt;");
+  await sendMessage(
+    chat,
+    "Доступные команды: /users, /approve &lt;chat_id&gt;, /remove &lt;chat_id&gt;",
+  );
 }
 
 async function handleCallback(callback: {
@@ -233,10 +232,7 @@ export const Route = createFileRoute("/api/telegram/webhook")({
             await handleMessage((update.message ?? update.edited_message)!);
           }
         } catch (error) {
-          console.error(
-            "Telegram webhook error:",
-            error instanceof Error ? error.message : error,
-          );
+          console.error("Telegram webhook error:", error instanceof Error ? error.message : error);
         }
 
         // Always 200 so Telegram does not retry endlessly.

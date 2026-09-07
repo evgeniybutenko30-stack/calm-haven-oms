@@ -74,8 +74,7 @@ async function createSqliteStore(): Promise<Store | null> {
       );
     `);
 
-    const asUser = (row: unknown): TelegramUser | null =>
-      row ? (row as TelegramUser) : null;
+    const asUser = (row: unknown): TelegramUser | null => (row ? (row as TelegramUser) : null);
 
     return {
       async upsertPending(user) {

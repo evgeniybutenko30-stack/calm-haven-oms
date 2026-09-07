@@ -25,12 +25,16 @@ async function callTelegram(method: string, payload: Record<string, unknown>) {
     body: JSON.stringify(payload),
   });
 
-  const body = (await response.json().catch(() => null)) as
-    | { ok?: boolean; description?: string; result?: unknown }
-    | null;
+  const body = (await response.json().catch(() => null)) as {
+    ok?: boolean;
+    description?: string;
+    result?: unknown;
+  } | null;
 
   if (!response.ok || !body?.ok) {
-    throw new Error(`Telegram ${method} failed [${response.status}]: ${body?.description ?? "no body"}`);
+    throw new Error(
+      `Telegram ${method} failed [${response.status}]: ${body?.description ?? "no body"}`,
+    );
   }
   return body.result;
 }
