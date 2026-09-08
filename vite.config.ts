@@ -6,10 +6,15 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// On a plain Node VPS build with NITRO_PRESET=node-server (see `npm run build:vps`).
+const preset = process.env["NITRO_PRESET"];
+
 export default defineConfig({
+  ...(preset ? { nitro: { preset } } : {}),
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
   },
 });
+
