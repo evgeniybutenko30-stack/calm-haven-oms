@@ -24,7 +24,6 @@ import {
   Dice5,
   Scale,
   Brain,
-  HeartPulse,
   Pill,
   Sparkles,
   MapPin,
@@ -93,14 +92,16 @@ function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (prefersReducedMotion()) {
+    if (prefersReducedMotion() || typeof IntersectionObserver === "undefined") {
       setVisible(true);
       return;
     }
+    // Keep initially visible content readable, even before hydration.
+    if (el.getBoundingClientRect().top >= window.innerHeight) setVisible(false);
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -129,7 +130,7 @@ function Reveal({
   );
 }
 
-/** Hero-only staged entry: renders after mount with staggered fade+slide. */
+/** Hero entry stays readable before hydration and while animations run. */
 function Stage({
   children,
   delay = 0,
@@ -141,22 +142,11 @@ function Stage({
   as?: React.ElementType;
   className?: string;
 }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    if (prefersReducedMotion()) {
-      setMounted(true);
-      return;
-    }
-    const id = requestAnimationFrame(() => setMounted(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
   return (
     <Tag
       className={className}
       style={{
-        opacity: mounted ? 1 : 0,
-        transform: mounted ? "translateY(0)" : "translateY(18px)",
-        transition: `opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms`,
+        animation: `stageEnter 0.45s ease-out ${delay}ms both`,
       }}
     >
       {children}
@@ -374,11 +364,6 @@ const SERVICES = [
     icon: ShieldCheck,
     title: "Кодирование от алкоголизма",
     desc: "Метод подбираем на консультации. Безопасно, конфиденциально, под наблюдением врача.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Выведение из запоя",
-    desc: "Снимаем абстинентный синдром и восстанавливаем состояние — дома или в кабинете, без больницы.",
   },
   {
     icon: Pill,
@@ -1313,12 +1298,28 @@ function Reviews() {
 }
 
 const PRICES = [
-  { name: "Первичная консультация врача", price: "от 2 500 ₽" },
-  { name: "Кодирование от алкоголизма", price: "от 6 000 ₽" },
-  { name: "Выведение из запоя (амбулаторно)", price: "от 4 500 ₽" },
-  { name: "Кодирование от курения", price: "от 4 000 ₽" },
-  { name: "Кодирование от избыточного веса", price: "от 5 000 ₽" },
-  { name: "Психотерапия (сеанс)", price: "от 3 000 ₽" },
+  { name: "Первичная консультация врача", options: [{ label: "", price: "от 3 500 ₽" }] },
+  {
+    name: "Кодирование, психотерапия, медикаментозное лечение алкоголизма",
+    options: [{ label: "Онлайн", price: "от 8 500 ₽" }, { label: "В клинике", price: "от 18 000 ₽" }],
+  },
+  {
+    name: "Кодирование, гипноз, психотерапия табачной зависимости",
+    options: [{ label: "Онлайн", price: "от 6 500 ₽" }, { label: "В клинике", price: "от 13 000 ₽" }],
+  },
+  {
+    name: "Лечение, психотерапия игровой зависимости, игромании",
+    options: [{ label: "Онлайн (3 сеанса)", price: "от 15 000 ₽" }, { label: "В клинике", price: "от 33 000 ₽" }],
+  },
+  {
+    name: "Лечение, психотерапия, кодирование, диетотерапия избыточного веса, переедания, влечения к сладкому",
+    options: [{ label: "Онлайн (2 сеанса)", price: "от 9 500 ₽" }, { label: "В клинике", price: "от 18 500 ₽" }],
+  },
+  {
+    name: "Медикаментозная и психотерапевтическая гипнотерапия тревожных расстройств, стрессов, неврозов, депрессий",
+    options: [{ label: "Онлайн (1 сеанс)", price: "от 3 500 ₽" }, { label: "В клинике", price: "от 4 000 ₽" }],
+  },
+  { name: "Консультация родственников пациента", options: [{ label: "", price: "Бесплатно" }] },
 ];
 
 function Prices() {
@@ -1342,12 +1343,19 @@ function Prices() {
           {PRICES.map((p, i) => (
             <div
               key={p.name}
-              className={`flex items-center justify-between gap-6 px-6 md:px-10 py-6 ${
+              className={`grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.65fr)] items-center gap-4 md:gap-8 px-6 md:px-10 py-6 ${
                 i !== 0 ? "border-t border-border/60" : ""
               }`}
             >
-              <div className="text-base md:text-lg">{p.name}</div>
-              <div className="font-display text-lg md:text-xl text-primary shrink-0">{p.price}</div>
+              <div className="text-base md:text-lg leading-relaxed min-w-0">{p.name}</div>
+              <dl className="space-y-2 min-w-0">
+                {p.options.map((option) => (
+                  <div key={option.label} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <dt className="text-sm text-muted-foreground">{option.label}</dt>
+                    <dd className="font-display text-lg md:text-xl text-primary whitespace-nowrap">{option.price}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           ))}
         </div>
@@ -1503,6 +1511,15 @@ function Footer() {
             <li className="text-muted-foreground">Пн–Сб 10:00–18:00</li>
           </ul>
         </div>
+      </div>
+      <div className="container-page mt-8 space-y-3 text-sm text-muted-foreground">
+        <p>Требуется консультация специалиста.</p>
+        <p className="leading-relaxed">
+          Официальный сайт «Клиники психотерапии доктора Бабикова В.Г.» — {" "}
+          <a href="https://www.babikovklinika.ru" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4 break-all">
+            www.babikovklinika.ru
+          </a>
+        </p>
       </div>
       <div className="container-page mt-10 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-muted-foreground">
         <div>© {new Date().getFullYear()} Клиника психотерапии доктора Бабикова. Все права защищены.</div>
